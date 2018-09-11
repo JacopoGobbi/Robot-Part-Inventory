@@ -12,7 +12,7 @@ import play.api.test.{FakeHeaders, FakeRequest, Helpers}
 import scala.concurrent.ExecutionContext.Implicits
 import scala.concurrent.duration.DurationDouble
 
-class RobotsControllerTest extends PlaySpec with Results {
+class RobotsControllerTests extends PlaySpec with Results {
   implicit val timeout: Timeout = 10 seconds
   implicit val actorSystem: ActorSystem = ActorSystem()
   implicit val materializer: ActorMaterializer = ActorMaterializer()
