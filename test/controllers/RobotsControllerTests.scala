@@ -1,47 +1,40 @@
 package controllers
 
-import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
-import akka.util.Timeout
-import org.scalatestplus.play.PlaySpec
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.ControllerHelpers._
-import play.api.mvc.{ControllerComponents, Results}
-import play.api.test.{FakeHeaders, FakeRequest, Helpers}
+import play.api.test.Helpers.{GET, POST, contentAsJson, status}
+import play.api.test.{FakeHeaders, FakeRequest}
+import utils.ControllerSuite
 
-import scala.concurrent.ExecutionContext.Implicits
-import scala.concurrent.duration.DurationDouble
-
-class RobotsControllerTests extends PlaySpec with Results {
-  implicit val timeout: Timeout = 10 seconds
-  implicit val actorSystem: ActorSystem = ActorSystem()
-  implicit val materializer: ActorMaterializer = ActorMaterializer()
-  import Implicits.global
-
-  "Robot creation" should {
-    "succeed" in {
-      val robot = Json.parse("""
-          |{
-          |  "serial": "Test123TEST",
-          |  "name": "MyAmazingTestRobot",
-          |  "number": 1234,
-          |  "manufacturer": "Jac",
-          |  "weight": "12 Kg"
-          |}
+class RobotsControllerTests
+  extends ControllerSuite {
+  val robotSerial = "Test123TEST"
+  val myRobot: JsValue = Json.parse(
+    s"""
+       |{
+       |  "serial": "$robotSerial",
+       |  "name": "MyAmazingTestRobot",
+       |  "number": 1234,
+       |  "manufacturer": "Jac",
+       |  "weight": "12 Kg"
+       |}
         """.stripMargin)
 
-      val controller: RobotsController = new RobotsController() {
-        override def controllerComponents: ControllerComponents =
-          Helpers.stubControllerComponents()
-      }
+  "Robot controller" should {
+    "succeed on creation" in {
       val req = FakeRequest(
-        Helpers.POST,
+        POST,
         "/robots",
         FakeHeaders(List(CONTENT_TYPE -> JSON)),
-        robot
+        myRobot
       )
-      val result = controller.add().apply(req)
-      Helpers.status(result) mustBe NO_CONTENT
+      val result = controllers.robotsController.add().apply(req)
+      status(result) mustBe NO_CONTENT
+    }
+    "succeed on retrieval" in {
+      val req = FakeRequest(GET, s"/robots/$robotSerial")
+      val result = controllers.robotsController.read().apply(req)
+      contentAsJson(result) mustBe myRobot
     }
   }
 }

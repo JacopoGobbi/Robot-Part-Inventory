@@ -11,23 +11,33 @@ class RobotPartInventoryIntegrationTests
     with IntegrationPatience {
 
   implicit val ws: WSClient = app.injector.instanceOf(classOf[WSClient])
+  val headers = Seq(CONTENT_TYPE -> JSON)
+  val robotSerial = "Test123TEST"
+  val myRobot: String =
+    s"""
+       |{
+       |  "serial": "$robotSerial",
+       |  "name": "MyAmazingTestRobot",
+       |  "number": 1234,
+       |  "manufacturer": "Jac",
+       |  "weight": "12 Kg"
+       |}
+    """.stripMargin
 
   "Robot creation" should {
-    "create a robot" in {
-      val headers = Seq(CONTENT_TYPE -> JSON)
+    "Create a robot" in {
       val result = wsCall(controllers.routes.RobotsController.add())
-        .withHttpHeaders(headers :_*)
-        .post("""
-          |{
-          |  "serial": "Test123TEST",
-          |  "name": "MyAmazingTestRobot",
-          |  "number": 1234,
-          |  "manufacturer": "Jac",
-          |  "weight": "12 Kg"
-          |}
-        """.stripMargin)
+        .withHttpHeaders(headers: _*)
+        .post(myRobot)
       val statusCode = result.futureValue.status
       statusCode mustBe NO_CONTENT
+    }
+    "Retrieve a robot" in {
+      val result = wsCall(controllers.routes.RobotsController.read(robotSerial))
+        .withHttpHeaders(headers: _*)
+        .get()
+      val robotBody = result.futureValue.body
+      robotBody mustBe myRobot
     }
   }
 }

@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.JsValue
-import play.api.mvc.{Action, InjectedController}
+import play.api.mvc.{Action, AnyContent, InjectedController}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -11,4 +11,6 @@ class RobotsController @Inject()(implicit exec: ExecutionContext) extends Inject
   def add(): Action[JsValue] = Action.async(parse.json) { _ =>
     Future.successful(NoContent)
   }
+
+  def read(): Action[AnyContent] = TODO
 }
