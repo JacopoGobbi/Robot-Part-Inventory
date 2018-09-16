@@ -16,31 +16,31 @@ class RobotPartInventoryIntegrationTests
   implicit val ws: WSClient = app.injector.instanceOf(classOf[WSClient])
   val headers = Seq(CONTENT_TYPE -> JSON)
   val robotSerial = "Test123TEST"
-  val myRobot: String =
+  val myRobotPart: String =
     s"""
        |{
        |  "serial": "$robotSerial",
-       |  "name": "MyAmazingTestRobot",
+       |  "name": "MyAmazingTestRobotPart",
        |  "number": 1234,
        |  "manufacturer": "Jac",
        |  "weight": "12 Kg"
        |}
     """.stripMargin
 
-  "Robot creation" should {
-    "Create a robot" in {
-      val result = wsCall(controllers.routes.RobotsController.add())
+  "RobotPart creation" should {
+    "Save a robot's part" in {
+      val result = wsCall(controllers.routes.RobotPartsController.add())
         .withHttpHeaders(headers: _*)
-        .post(myRobot)
+        .post(myRobotPart)
       val statusCode = result.futureValue.status
       statusCode mustBe NO_CONTENT
     }
-    "Retrieve a robot" in {
-      val result = wsCall(controllers.routes.RobotsController.read(robotSerial))
+    "Retrieve a robot's part" in {
+      val result = wsCall(controllers.routes.RobotPartsController.read(robotSerial))
         .withHttpHeaders(headers: _*)
         .get()
       val robotJson = Json.parse(result.futureValue.body)
-      robotJson mustBe Json.parse(myRobot)
+      robotJson mustBe Json.parse(myRobotPart)
     }
   }
 }

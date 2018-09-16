@@ -1,6 +1,6 @@
 package models
 
-case class Robot(
+case class RobotPart(
   serial: String,
   name: String,
   number: Int,

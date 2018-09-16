@@ -1,2 +1,2 @@
-POST    /robots                         controllers.RobotsController.add
-GET     /robots/:serialNumber           controllers.RobotsController.read(serialNumber: String)
+POST    /robotParts                         controllers.RobotPartsController.add
+GET     /robotParts/:serialNumber           controllers.RobotPartsController.read(serialNumber: String)
