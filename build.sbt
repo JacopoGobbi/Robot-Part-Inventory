@@ -1,6 +1,6 @@
 name := "RobotPartInventory"
  
-version := "1.0" 
+version := "0.2-SNAPSHOT" 
       
 lazy val `robotPartInventory` = (project in file(".")).enablePlugins(PlayScala)
 
