@@ -16,10 +16,10 @@ libraryDependencies ++= Seq(
   ehcache,
   ws,
   guice,
-  "com.h2database" % "h2" % "1.4.197",
-  "io.getquill" %% "quill-jdbc" % "2.5.4",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % "test",
-  "org.mockito" % "mockito-core" % "2.22.0" % Test
+  "com.h2database" % "h2" % "1.4.198",
+  "io.getquill" %% "quill-jdbc" % "3.0.1",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.1" % "test",
+  "org.mockito" % "mockito-core" % "2.24.5" % Test
 )
 
       
